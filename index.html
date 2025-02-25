@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EHC</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    button {
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .just {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="container" x-data>
+    <p>Status <span x-text="$store.statusIcon"></span></p>
+    <nav>
+      <div>
+        <button @click="startConnection()">Połącz urządzenie</button>
+        <button @click="closeConnection()">Rozłącz urządzenie</button>
+      </div>
+    </nav>
+  </header>
+  <main class="container" x-data>
+    <div id="status">
+      <div class="grid just">
+
+        <article>
+          <header>Podnośnik</header>
+          <span x-text="$store.status.hitch"></span>
+        </article>
+        <article>
+          <header>Złącze</header>
+          <span x-text="$store.status.hydr"></span>
+        </article>
+        <article>
+          <header>Licznik</header>
+          <span x-text="$store.status.counter + $store.status.timeoff"></span>
+        </article>
+        <article>
+          <header>Gaz</header>
+          <span x-text="$store.status.etc"></span>
+        </article>
+      </div>
+    </div>
+    <div id="controller" class="grid" x-data>
+      <div id="hitch" x-data="{hitch_inter: null}">
+        <h3>Podnośnik</h3>
+        <div>
+          <button @click="writeOnCharacteristic(1)">Góra Auto</button>
+          <button @click="writeOnCharacteristic(13)">Dół Auto</button>
+        </div>
+        <div>
+          <button @mousedown="hitch_inter = setInterval(() => buffer.push(5), 50)" @mouseup="clearInterval(hitch_inter)">Góra</button>
+          <button @mousedown="hitch_inter = setInterval(() => buffer.push(9), 50)" @mouseup="clearInterval(hitch_inter)">Dół</button>
+        </div>
+      </div>
+      <div id="hydr" x-data="{ hydr_inter: null}">
+        <h3>Złącze 1</h3>
+        <div>
+          <button @click="writeOnCharacteristic(2)">Góra Auto</button>
+          <button @click="writeOnCharacteristic(14)">Dół Auto</button>
+        </div>
+        <div>
+          <button @mousedown="hydr_inter = setInterval(() => buffer.push(6), 50)" @mouseup="clearInterval(hydr_inter)">Góra</button>
+          <button @mousedown="hydr_inter = setInterval(() => buffer.push(10), 50)" @mouseup="clearInterval(hydr_inter)">Dół</button>
+        </div>
+      </div>
+      <div id="counter">
+        <h3>Licznik</h3>
+        <div>
+          <button @click="writeOnCharacteristic(3)">Reset licznika</button>
+          <button @click="writeOnCharacteristic(7)">Wykrywacz</button>
+        </div>
+      </div>
+      <div id="etc">
+        <h3>Gaz</h3>
+        <div>
+          <button @click="writeOnCharacteristic(4)">Wyższa pozycja</button>
+          <button @click="writeOnCharacteristic(8)">Niższa pozycja</button>
+        </div>
+        <div>
+          <button @click="writeOnCharacteristic(12)">Automat</button>
+          <button @click="writeOnCharacteristic('15;8')">Zgaś</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+
+</body>
+<script src="app.js"></script>
+
+</html>
