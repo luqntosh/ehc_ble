@@ -59,7 +59,10 @@
           <button @click="writeOnCharacteristic(13)">Dół Auto</button>
         </div>
         <div>
-          <button @mousedown="hitch_inter = setInterval(() => buffer.push(5), 50)" @mouseup="clearInterval(hitch_inter)">Góra</button>
+          <button @mousedown="hitch_inter = setInterval(() => buffer.push(5), 50)"
+             @mouseup="clearInterval(hitch_inter)"
+             @touchstart="hitch_inter = setInterval(() => buffer.push(5), 50)"
+             @touchend="clearInterval(hitch_inter)">Góra</button>
           <button @mousedown="hitch_inter = setInterval(() => buffer.push(9), 50)" @mouseup="clearInterval(hitch_inter)">Dół</button>
         </div>
       </div>
