@@ -6,52 +6,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EHC</title>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <style>
-    button {
-      margin-right: 5px;
-      margin-bottom: 5px;
-    }
-
-    .just {
-      text-align: center;
-    }
-  </style>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> -->
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 </head>
 
 <body>
   <header class="container" x-data>
-    <p>Status <span x-text="$store.statusIcon"></span></p>
-    <nav>
-      <div>
-        <button @click="startConnection()">Połącz urządzenie</button>
-        <button @click="closeConnection()">Rozłącz urządzenie</button>
-      </div>
+
+    <nav class="nav">
+      <p class="nav-left">Status <span x-text="$store.statusIcon"></span></p>
+      <div class="nav-right">
+        <a @click="startConnection()">Połącz urządzenie</a>
+        <a @click="closeConnection()">Rozłącz urządzenie</a>
+      </dic>
     </nav>
   </header>
   <main class="container" x-data>
     <div id="status">
-      <div class="grid just">
+      <div class="row">
 
-        <article>
+        <article class="col card">
           <header>Podnośnik</header>
           <span x-text="$store.status.hitch"></span>
         </article>
-        <article>
+        <article class="col card">
           <header>Złącze</header>
           <span x-text="$store.status.hydr"></span>
         </article>
-        <article>
+        <article class="col card">
           <header>Licznik</header>
           <span x-text="$store.status.counter + $store.status.timeoff"></span>
         </article>
-        <article>
+        <article class="col card">
           <header>Gaz</header>
           <span x-text="$store.status.etc"></span>
         </article>
       </div>
     </div>
-    <div id="controller" class="grid" x-data>
+    <div id="controller" class="" x-data>
       <div id="hitch" x-data="{hitch_inter: null}">
         <h3>Podnośnik</h3>
         <div>
@@ -69,9 +61,9 @@
       </div>
       <div id="hydr" x-data="{ hydr_inter: null}">
         <h3>Złącze 1</h3>
-        <div>
-          <button @click="writeOnCharacteristic(2)">Góra Auto</button>
-          <button @click="writeOnCharacteristic(14)">Dół Auto</button>
+        <div class="row">
+          <button class="col" @click="writeOnCharacteristic(2)">Góra Auto</button>
+          <button class="col" @click="writeOnCharacteristic(14)">Dół Auto</button>
         </div>
         <div>
           <button @mousedown="hydr_inter = setInterval(() => buffer.push(6), 50)" @mouseup="clearInterval(hydr_inter)"
