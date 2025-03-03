@@ -28,7 +28,7 @@ async function startConnection() {
         connect();
         allowConnection = true
     } catch (error) {
-        console.log('Argh! ' + error);
+        console.log('Ble: ' + error);
     }
 }
 
