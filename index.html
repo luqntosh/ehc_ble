@@ -48,14 +48,25 @@
       box-shadow: 0 1px 3px var(--color-grey);
     }
 
-    .card>header {
-      padding-left: 0.25em;
-      padding-right: 0.25em;
+    .card header {
+      padding: 0.25em;
       border-bottom: 0.2em solid #e7eaf0;
       border-top-right-radius: 0.25em;
       border-top-left-radius: 0.25em;
       background-color: #fbfcfc;
 
+    }
+
+    .grid {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 0.75em;
+    }
+
+    .grid button {
+      flex-grow: 1;
+      margin: 0 1em;
+      padding: 0.5em 0.25em;
     }
   </style>
 
@@ -77,25 +88,25 @@
 
       <article class="card">
         <header>Podnośnik</header>
-        <span x-text="$store.status.hitch"></span>
+        <p x-text="$store.status.hitch"></p>
       </article>
       <article class="card">
         <header>Złącze</header>
-        <span x-text="$store.status.hydr"></span>
+        <p x-text="$store.status.hydr"></p>
       </article>
       <article class="card">
         <header>Licznik</header>
-        <span x-text="$store.status.counter + $store.status.timeoff"></span>
+        <p x-text="$store.status.counter + $store.status.timeoff"></p>
       </article>
       <article class="card">
         <header>Gaz</header>
-        <span x-text="$store.status.etc"></span>
+        <p x-text="$store.status.etc"></p>
       </article>
 
     </div>
     <div id="controller" class="" x-data>
       <div id="hitch" x-data="{hitch_inter: null}">
-        <h3>Podnośnik</h3>
+        <h5>Podnośnik</h5>
         <div class="grid">
           <button @click="writeOnCharacteristic(1)">Góra Auto</button>
           <button @click="writeOnCharacteristic(13)">Dół Auto</button>
@@ -110,7 +121,7 @@
         </div>
       </div>
       <div id="hydr" x-data="{ hydr_inter: null}">
-        <h3>Złącze 1</h3>
+        <h5>Złącze 1</h5>
         <div class="grid">
           <button class="" @click="writeOnCharacteristic(2)">Góra Auto</button>
           <button class="" @click="writeOnCharacteristic(14)">Dół Auto</button>
@@ -125,14 +136,14 @@
         </div>
       </div>
       <div id="counter">
-        <h3>Licznik</h3>
+        <h5>Licznik</h5>
         <div class="grid">
           <button @click="writeOnCharacteristic(3)">Reset licznika</button>
           <button @click="writeOnCharacteristic(7)">Wykrywacz</button>
         </div>
       </div>
       <div id="etc">
-        <h3>Gaz</h3>
+        <h5>Gaz</h5>
         <div class="grid">
           <button @click="writeOnCharacteristic(4)">Wyższa pozycja</button>
           <button @click="writeOnCharacteristic(8)">Niższa pozycja</button>
