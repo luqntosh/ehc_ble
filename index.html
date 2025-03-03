@@ -17,8 +17,8 @@
       align-items: stretch;
     }
 
-    .nav a {
-      padding: 1em 1em;
+    .nav button {
+      margin: 1em 1em;
     }
 
     .nav-left {
@@ -78,8 +78,8 @@
     <nav class="nav">
       <p class="nav-left">Status:&nbsp <span x-text="$store.statusIcon"></span></p>
       <div class="nav-right">
-        <a @click="startConnection()">Połącz</a>
-        <a @click="closeConnection()">Rozłącz</a>
+        <button @click="startConnection()">Połącz</button>
+        <button @click="closeConnection()">Rozłącz</button>
       </div>
     </nav>
   </header>
