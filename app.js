@@ -8,9 +8,8 @@ let bleServer;
 let bleServiceConnection;
 let infoCharacteristicConnection;
 let allowConnection = true;
-let interval;
-let buffer = [];
 
+const notifications = ['', 'Brak magnesu', 'Gotowe', '', 'Zapisano pozycje', 'Zapisano w pamieci stałej']
 const bleService = '88a27234-28dd-4fb4-8983-6d3e392d038e';
 const infoCharacteristic = 'b061cb48-d310-489b-bb30-f23ab5cebf7d'
 const stateCharacteristic = '15f366ef-6925-4da3-af6f-7de2c1b82794'
@@ -45,16 +44,6 @@ async function connect() {
             infoCharacteristicConnection.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
             infoCharacteristicConnection.startNotifications();
             Alpine.store('statusIcon', '🟢');
-            interval = setInterval(() => {
-                if (buffer.length !== 0 ) {
-                    let set = new Set(buffer)
-                    buffer = [...set];
-                    writeOnCharacteristic(buffer.join(';'))
-                    buffer = []
-                }
-              }, 150);
-              
-
         }
 
     }
@@ -67,7 +56,6 @@ async function connect() {
 function onDisconnected() {
     console.log('> Bluetooth Device disconnected');
     Alpine.store('statusIcon', '🟡');
-    clearInterval(interval);
     connect();
 }
 
@@ -83,7 +71,6 @@ function closeConnection() {
         console.log('> Bluetooth Device is already disconnected');
     }
     Alpine.store('statusIcon', '🔴');
-    clearInterval(interval);
 }
 
 function handleCharacteristicChange(event) {
@@ -92,8 +79,9 @@ function handleCharacteristicChange(event) {
     const hi = stateTable[0][state[0]];
     const h1 = stateTable[0][state[1]];
     const etc = stateTable[1][state[4]];
+    const notification = state[5];
     const c = state[3].toString().padStart(2);
-    const p = state[2] ? '-W' : ' ';
+    const p = state[2] ? '-C' : ' ';
     let obj = {
         hitch: hi,
         hydr: h1,
@@ -102,6 +90,19 @@ function handleCharacteristicChange(event) {
         etc: etc
     }
     Alpine.store('status', obj)
+    if (notification == 3) {
+        Alpine.store("notification").calibration_mode = true;
+    } else if (notification == 0) {
+        Alpine.store("notification").calibration_mode = false;
+    } else {
+        Alpine.store("notification").notification = true;
+        Alpine.store("notification").notification_text = notifications[notification];
+        setTimeout(() => {
+            Alpine.store("notification").notification = false;
+            Alpine.store("notification").notification_text = '';
+        }, 1000);
+    }
+    console.log(notification);
 }
 function writeOnCharacteristic(value) {
     if (bleServer && bleServer.connected) {
@@ -130,6 +131,12 @@ document.addEventListener('alpine:init', () => {
         counter: 0,
         timeoff: ' ',
         etc: 'Z'
+    })
+
+    Alpine.store('notification', {
+        calibration_mode: false,
+        notification: false,
+        notification_text: ""
     })
     Alpine.store('statusIcon', '🔴');
 })

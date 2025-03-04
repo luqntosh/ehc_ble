@@ -68,13 +68,36 @@
       margin: 0 1em;
       padding: 0.5em 0.25em;
     }
+
+    #popout {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      text-align: center;
+      background-color: #fbfcfc;
+      border: 3px solid #f1f1f1;
+      z-index: 9;
+    }
+
+    .red-text {
+      padding: 0.25em 1em;
+      color: red;
+    }
+
+    .green-text {
+      padding: 0.25em 1em;
+      color: green;
+    }
+
+    [x-cloak] { display: none !important; }
+
   </style>
 
 </head>
 
 <body>
   <header x-data>
-
     <nav class="nav">
       <p class="nav-left">Status:&nbsp <span x-text="$store.statusIcon"></span></p>
       <div class="nav-right">
@@ -84,6 +107,10 @@
     </nav>
   </header>
   <main class="" x-data>
+    <div id="popout">
+      <p class="red-text" x-show="$store.notification.calibration_mode" x-transition x-cloak >Konfiguracja etc</p>
+      <p class="green-text" x-show="$store.notification.notification" x-text="$store.notification.notification_text" x-cloak x-transition></p>
+    </div>
     <div class="container">
 
       <article class="card">
@@ -109,26 +136,26 @@
         <h5>Podnośnik</h5>
         <div class="grid">
           <button @click="writeOnCharacteristic(1)">Góra Auto</button>
-          <button @click="writeOnCharacteristic(13)">Dół Auto</button>
+          <button @click="writeOnCharacteristic(5)">Dół Auto</button>
         </div>
       </div>
       <div id="hydr" x-data="{ hydr_inter: null}">
         <h5>Złącze 1</h5>
         <div class="grid">
           <button class="" @click="writeOnCharacteristic(2)">Góra Auto</button>
-          <button class="" @click="writeOnCharacteristic(14)">Dół Auto</button>
+          <button class="" @click="writeOnCharacteristic(6)">Dół Auto</button>
         </div>
         <div class="grid">
           <button class="" @click="writeOnCharacteristic(17)">Góra</button>
           <button class="" @click="writeOnCharacteristic(18)">Dół</button>
         </div>
-        
+
       </div>
       <div id="counter">
         <h5>Licznik</h5>
         <div class="grid">
           <button @click="writeOnCharacteristic(3)">Reset licznika</button>
-          <button @click="writeOnCharacteristic(7)">Wykrywacz</button>
+          <button @click="writeOnCharacteristic(7)">Czujnik</button>
         </div>
       </div>
       <div id="etc">
@@ -139,7 +166,7 @@
         </div>
         <div class="grid">
           <button @click="writeOnCharacteristic(12)">Automat</button>
-          <button @click="writeOnCharacteristic('15;8')">Zgaś</button>
+          <button @click="writeOnCharacteristic(16)">Zgaś</button>
         </div>
 
       </div>
